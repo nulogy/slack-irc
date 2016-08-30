@@ -59,6 +59,13 @@ describe('Bot', function() {
     this.bot.slack.web.chat.postMessage.should.have.been.calledWith(1, text, message);
   });
 
+  it('should not send messages to slack when disabled', function() {
+    this.bot.shouldSendToSlack = false;
+
+    this.bot.sendToSlack('testuser', '#irc', 'nope');
+    this.bot.slack.web.chat.postMessage.should.not.have.been.called;
+  });
+
   it('should send messages to slack groups if the bot is in the channel', function() {
     this.bot.slack.rtm.dataStore.getChannelOrGroupByName = () => {
       const channel = new ChannelStub();
@@ -202,6 +209,18 @@ describe('Bot', function() {
     this.bot.sendToIRC(message);
     const ircText = `<testuser> ${text}`;
     ClientStub.prototype.say.should.have.been.calledWith('#irc', ircText);
+  });
+
+  it('should not send messages to IRC when disabled', function() {
+    this.bot.shouldSendToIRC = false;
+
+    const message = {
+      text: 'nope',
+      channel: 'slack'
+    };
+
+    this.bot.sendToIRC(message);
+    ClientStub.prototype.say.should.not.have.been.called;
   });
 
   it('should send /me messages to irc', function() {

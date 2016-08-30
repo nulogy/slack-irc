@@ -96,7 +96,13 @@ Valid JSON cannot contain comments, so remember to remove them first!
     "ircStatusNotices": {
       "join": false, // Don't send messages about joins
       "leave": true
-    }
+    },
+    // Unidirectional sending, e.g. when you want slack to archive an IRC conversation without slack conversation
+    leaking back into IRC
+    "sendToIRC": false
+    // or:
+    // "sendToSlack": false
+    // most pointless bot in the world if both of these are disabled at the same time though!
   }
 ]
 ```
